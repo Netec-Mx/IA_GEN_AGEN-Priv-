@@ -1,3 +1,5 @@
+<img src="Imagenes/neteclogo (2).png" alt="logo" width="300"/>
+
 # Inteligencia Artificial Generativa para creación de agentes
 
 Curso diseñado para desarrolladores que desean diseñar, construir y desplegar soluciones de inteligencia artificial generativa utilizando modelos de OpenAI y Claude. A lo largo del curso se abordará el consumo de APIs, el desarrollo de aplicaciones basadas en agentes, la implementación de arquitecturas RAG y GraphRAG, el uso de Agent Skills, Harnesses, Model Context Protocol (MCP) y técnicas para evaluar, observar y desplegar soluciones de IA generativa sobre Microsoft Azure.
@@ -79,6 +81,16 @@ Curso diseñado para desarrolladores que desean diseñar, construir y desplegar 
 - [2. Práctica 2. Proyecto Integrador Técnico](Capitulo07/README.md#2-práctica-2-proyecto-integrador-técnico)
   - Descripción: Desarrollar una solución basada en Python que integre consumo de modelos OpenAI o Claude mediante Azure AI Foundry, API desarrollada con FastAPI, Agent Skills, Harnesses de evaluación, GraphRAG, FalkorDB, Model Context Protocol (MCP), evaluación automática mediante agentes y preparación para su despliegue en Microsoft Azure.
   - Duración estimada: 60 min
+ 
+  - ---
+
+## 📬 **Contacto y más información**
+
+Si tienes alguna pregunta o necesitas más detalles, no dudes en [contactarnos](mailto:soporte@netec.com). También puedes encontrar más recursos en nuestra [página](https://netec.com).
+
+---
+
+¡Gracias por visitar nuestra plataforma! No olvides revisar todos los laboratorios y comenzar tu viaje de aprendizaje hoy mismo.
 
 ## Flujo de colaboración
 
