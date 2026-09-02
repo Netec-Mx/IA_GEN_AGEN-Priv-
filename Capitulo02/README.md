@@ -1,4 +1,4 @@
-# 1. Práctica 1. Cree una aplicación de chat de IA generativa
+# 1. Práctica 1. Implementar un cliente Python que consuma modelos de OpenAI y Claude mediante sus SDK oficiales, configurando parámetros de inferencia y comparando sus respuestas frente a distintos escenarios de negocio. 
 
 En este ejercicio usará el OpenAI SDK y la Responses API para crear una chat app que se conecta a un modelo desplegado en un proyecto de Microsoft Foundry.
 
