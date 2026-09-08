@@ -71,8 +71,3 @@ Si tienes alguna pregunta o necesitas más detalles, no dudes en [contactarnos](
 
 ¡Gracias por visitar nuestra plataforma! No olvides revisar todos los laboratorios y comenzar tu viaje de aprendizaje hoy mismo.
 
-## Flujo de colaboración
-
-- Trabajar en `changes_course`.
-- Crear Pull Request hacia `main`.
-- Merge por `Squash and merge`.
