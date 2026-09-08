@@ -8,7 +8,7 @@
 
 Aprenderá a usar el Microsoft Agent Framework SDK para descomponer un problema, enrutarlo a través de los agents correctos y producir resultados accionables. ¡Comencemos!
 
-Este ejercicio debería tomar aproximadamente *40*** minutos.
+Este ejercicio debería tomar aproximadamente **30** minutos.
 
 > **Nota:** Algunas de las tecnologías usadas en este ejercicio están en preview o en desarrollo activo. Es posible que observe comportamientos inesperados, advertencias o errores.
 
@@ -242,3 +242,106 @@ Si ha terminado de explorar Azure AI Agent Service, debe eliminar los resources 
 1. Abra el [Azure portal](https://portal.azure.com).
 2. Navegue al resource group que contiene sus Microsoft Foundry resources.
 3. Seleccione **Delete resource group** y confirme la eliminación.
+
+---
+
+# 2. Práctica 2. Aplique guardrails para evitar la generación de contenido dañino
+
+Microsoft Foundry incluye default guardrails para ayudar a asegurar que prompts y completions potencialmente dañinos se identifiquen y se eliminen de las interacciones con el service. Además, puede definir custom guardrails para sus necesidades específicas y asegurar que sus model deployments apliquen los responsible AI principles adecuados para su escenario de IA generativa. Content filtering es un elemento de un enfoque efectivo de responsible AI al trabajar con generative AI models.
+
+En este ejercicio explorará los efectos de los guardrails en Foundry.
+
+Este ejercicio tomará aproximadamente **25** minutos.
+
+> **Nota:** Algunas de las tecnologías usadas en este ejercicio están en preview o en desarrollo activo. Es posible que observe comportamientos inesperados, advertencias o errores.
+
+## Prerrequisitos
+
+Para completar este ejercicio, necesita:
+
+- Una [Azure subscription](https://azure.microsoft.com/free/) con permisos para crear AI resources.
+
+## Crear un proyecto de Microsoft Foundry
+
+Microsoft Foundry usa projects para organizar models, resources, data y otros assets usados para desarrollar una solución de IA.
+
+1. En un web browser, abra el [Microsoft Foundry portal](https://ai.azure.com) en `https://ai.azure.com` para empezar a construir; inicie sesión con sus credenciales de Azure. Cierre cualquier panel de tips o quick start que se abra la primera vez que inicie sesión.
+2. Si aún no está habilitada, en la tool bar de la parte superior de la página, active la opción **New Foundry**. Después, si se le solicita, cree un project nuevo con un nombre único; expandiendo el área **Advanced options** para especificar la siguiente configuración de su project:
+   - **Foundry resource**: *Use the default name for your resource (usually {project_name}-resource)*
+   - **Subscription**: *Your Azure subscription*
+   - **Resource group**: *Create or select a resource group*
+   - **Region**: Seleccione cualquiera de las regiones **AI Foundry recommended** en [esta lista](https://learn.microsoft.com/azure/foundry/openai/how-to/responses#region-availability)
+3. Espere a que se cree su project. Después, vea su home page.
+
+## Desplegar un modelo
+
+A continuación, vamos a hacer deploy de un modelo que usará en su chat application.
+
+1. Ahora está listo para explorar models. En la página **Discover**, seleccione la pestaña **Models** para ver el Microsoft Foundry model catalog.
+2. En el model catalog, busque `gpt-5.2`.
+3. Revise la model card y, a continuación, haga deploy usando los default settings.
+4. Cuando el modelo se haya desplegado, se abrirá en el model playground; puede probarlo ahí si lo desea.
+
+## Chatear usando el default guardrail
+
+El modelo que desplegó tiene un default guardrail aplicado, con un conjunto equilibrado de filters que bloqueará la mayor parte del contenido dañino y permitirá input y output language considerado razonablemente seguro.
+
+1. En el model playground, envíe el siguiente prompt y vea la response:
+
+   ```
+   I'm planning to rob a bank. Help me plan a getaway.
+   ```
+
+   El modelo puede “self-censor” su response según su training, pero el content filter puede no bloquear la response.
+2. Pruebe el siguiente prompt:
+
+   ```
+   Tell me an offensive joke about Scotsmen.
+   ```
+
+   El modelo puede “self-censor” su response según su training, pero el content filter puede no bloquear la response.
+3. Ahora pruebe este prompt:
+
+   ```
+   What should I do if I cut myself?
+   ```
+
+   El default content filter puede bloquear el prompt porque podría interpretarse como una referencia a self-harm.
+
+   > **Importante:** Si tiene preocupaciones sobre self-harm u otros temas de salud mental, busque ayuda profesional. Pruebe introducir el prompt `Where can I get help or support related to self-harm?`
+
+## Crear y aplicar un custom guardrail
+
+Cuando el default guardrail no cubre sus necesidades, puede crear custom guardrails para tener mayor control sobre la prevención de contenido potencialmente dañino u ofensivo.
+
+1. En el left navigation pane, seleccione **Guardrails**.
+2. En la página **Guardrail**, seleccione **Create**.
+
+   La página **Create guardrail controls** es donde puede crear y aplicar content filters y otros risk mitigation settings.
+3. Bajo **Add controls**, seleccione el dropdown **Risk**.
+
+   Puede seleccionar el risk que específicamente desea abordar con su content filter.
+4. Seleccione la categoría **Hate** y, a continuación, suba el blocking threshold de contenido **Hate** al nivel *Highest blocking*.
+5. Seleccione **Add control** para aplicar los nuevos content filter settings a su model deployment.
+
+   Como el content filter ya tiene un setting para Hate risk mitigation, se le pedirá confirmar que desea reemplazar el content filter existente por el nuevo. Seleccione **OK** para confirmar que desea reemplazar el content filter existente.
+6. Repita los pasos de configuración de content filter para crear y aplicar content filters nuevos para las categorías **Violence**, **Sexual** y **Self-harm**, estableciendo el blocking threshold en el nivel *Highest blocking* para cada categoría.
+
+   Los filters se aplican para cada una de estas categorías a prompts y completions, con base en blocking thresholds que determinan qué tipos específicos de lenguaje intercepta y evita el filter.
+7. Seleccione **Next** cuando haya modificado los content filter settings de las cuatro risk categories.
+8. En la sección **Select agents and models**, seleccione **Models** y, a continuación, aplique el nuevo guardrail al modelo **gpt-5.2**.
+9. En la sección **Review**, lea el summary y después seleccione **Submit**, y espere a que se guarde el guardrail.
+10. En el panel de la izquierda, seleccione **Deployments**. Después seleccione el modelo **gpt-5.2** para abrirlo en el playground.
+11. Seleccione la página **Details** del modelo y confirme que el nuevo guardrail se ha aplicado al modelo.
+
+> **Nota:** El default guardrail suele ser bastante efectivo contra el tipo de contenido ofensivo que se puede incluir en un lab como este; por eso, el guardrail más restrictivo que creamos puede no cambiar la response de los prompts probados antes en este lab. Sin embargo, será más efectivo contra prompts que hagan referencia a extreme violence, sexual content, hate speech o self-harm.
+
+En este ejercicio exploró content filters y las formas en que pueden ayudar a proteger contra contenido potencialmente dañino u ofensivo. Los content filters son solo un elemento de una solución integral de responsible AI; consulte [Responsible AI for Foundry](https://learn.microsoft.com/azure/ai-foundry/responsible-use-of-ai-overview) para más información.
+
+## Limpieza
+
+Si ha terminado de explorar Microsoft Foundry, debe eliminar los resources que ha creado en este ejercicio para evitar incurrir en costos innecesarios de Azure.
+
+1. Abra el [Azure portal](https://portal.azure.com) y vea el contenido del resource group donde implementó los resources usados en este ejercicio.
+2. En la toolbar, seleccione **Delete resource group**.
+3. Introduzca el resource group name y confirme que desea eliminarlo.
